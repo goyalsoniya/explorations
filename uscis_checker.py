@@ -63,6 +63,14 @@ if __name__ == "__main__":
 
             with open(OUTPUT_FILE, "w") as f:
                 json.dump(output, f, indent=2)
+
+            # Export for GitHub Actions
+            github_output = os.getenv("GITHUB_OUTPUT")
+            if github_output:
+                with open(github_output, "a") as f:
+                    f.write(f"earliest={earliest['city']} on {earliest['earliest_datetime']}\n")
+                    f.write(f"earliest_date={earliest['earliest_datetime'].split(' ')[0]}\n")
+
         else:
             print("No appointments available on or before 2025-10-07.")
 
