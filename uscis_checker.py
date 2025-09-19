@@ -6,6 +6,7 @@ URL = "https://my.uscis.gov/appointmentscheduler-appointment/field-offices/state
 OUTPUT_FILE = "appointments.json"
 
 TARGET_CITIES = {"San Jose", "San Francisco", "Oakland"}
+CUTOFF_DATE = datetime(2025, 10, 7)  # October 7, 2025
 
 def fetch_data():
     resp = requests.get(URL)
@@ -28,10 +29,12 @@ def parse_appointments(data):
 
             if all_slots:
                 earliest = min(all_slots)
-                results.append({
-                    "city": city,
-                    "earliest_datetime": earliest.strftime("%Y-%m-%d %H:%M")
-                })
+                # Only include if on or before cutoff date
+                if earliest.date() <= CUTOFF_DATE.date():
+                    results.append({
+                        "city": city,
+                        "earliest_datetime": earliest.strftime("%Y-%m-%d %H:%M")
+                    })
 
     return results
 
@@ -49,15 +52,19 @@ if __name__ == "__main__":
         results = parse_appointments(data)
         earliest = find_earliest(results)
 
-        output = {
-            "timestamp": datetime.utcnow().isoformat(),
-            "results": results,
-            "earliest_overall": earliest
-        }
-        print(json.dumps(output, indent=2))
+        # Only output if there is at least one eligible appointment
+        if earliest:
+            output = {
+                "timestamp": datetime.utcnow().isoformat(),
+                "results": results,
+                "earliest_overall": earliest
+            }
+            print(json.dumps(output, indent=2))
 
-        with open(OUTPUT_FILE, "w") as f:
-            json.dump(output, f, indent=2)
+            with open(OUTPUT_FILE, "w") as f:
+                json.dump(output, f, indent=2)
+        else:
+            print("No appointments available on or before 2025-10-07.")
 
     except Exception as e:
         print("Error:", e)
