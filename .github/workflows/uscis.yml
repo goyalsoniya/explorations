@@ -33,3 +33,23 @@ jobs:
           git add appointments.json
           git diff --quiet && git diff --staged --quiet || git commit -m "Update USCIS appointments [skip ci]"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:${{ github.ref }}
+
+      - name: Send email notification
+        if: always()  # always run, even if earlier step fails
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: soniya.iitd@gmail.com
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "USCIS Appointment Update"
+          to: soniya.iitd@gmail.com
+          from: USCIS Bot <soniya.iitd@gmail.com>
+          body: |
+            Hello Soniya,
+
+            The USCIS appointment checker just ran.
+            Latest results are attached in appointments.json.
+
+            Earliest appointment overall:
+            ${{ steps.run-checker.outputs.earliest }}
