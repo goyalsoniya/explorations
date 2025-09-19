@@ -74,5 +74,12 @@ if __name__ == "__main__":
         else:
             print("No appointments available on or before 2025-10-07.")
 
+            # Export for GitHub Actions
+            github_output = os.getenv("GITHUB_OUTPUT")
+            if github_output:
+                with open(github_output, "a") as f:
+                    f.write("earliest=None\n")
+                    f.write("earliest_date=9999-12-31\n")
+
     except Exception as e:
         print("Error:", e)
