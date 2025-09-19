@@ -1,17 +1,9 @@
 {
-  "timestamp": "2025-09-19T22:09:58.973918",
+  "timestamp": "2025-09-19T22:17:33.680586",
   "results": [
     {
       "city": "Oakland",
       "earliest_datetime": "2025-10-07 10:00"
-    },
-    {
-      "city": "San Francisco",
-      "earliest_datetime": "2025-10-08 08:00"
-    },
-    {
-      "city": "San Jose",
-      "earliest_datetime": "2025-10-15 12:00"
     }
   ],
   "earliest_overall": {
