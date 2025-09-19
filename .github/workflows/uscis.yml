@@ -2,7 +2,7 @@ name: USCIS Appointment Checker
 
 on:
   schedule:
-    - cron: "0 */6 * * *"   # run every 2 hours
+    - cron: "0 */2 * * *"   # run every 2 hours
   workflow_dispatch:         # allow manual trigger
   
 permissions:
