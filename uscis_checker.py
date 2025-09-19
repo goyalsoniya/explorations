@@ -1,6 +1,7 @@
 import requests
 import json
 from datetime import datetime
+import os
 
 URL = "https://my.uscis.gov/appointmentscheduler-appointment/field-offices/state/CA"
 OUTPUT_FILE = "appointments.json"
