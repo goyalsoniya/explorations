@@ -36,7 +36,7 @@ jobs:
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:${{ github.ref }}
 
       - name: Send email notification
-        if: always()  # always run, even if earlier step fails
+        if: ${{ steps.run-checker.outputs.earliest_date != '9999-12-31' && steps.run-checker.outputs.earliest_date <= '2025-10-07' }}
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
